@@ -32,5 +32,7 @@ pip install -r requirements.txt
 vercel dev
 ```
 Test paths:
+[What is country is London in?](https://capital-finder-liesl-white.vercel.app/api/country_finder?capital=london)  
+[What is the capital of Japan?](https://capital-finder-liesl-white.vercel.app/api/capital_finder?name=japan)  
 
 
