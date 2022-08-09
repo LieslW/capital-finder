@@ -11,15 +11,11 @@ class handler(BaseHTTPRequestHandler):
         query_string_list = parse.parse_qsl(url_components.query)
         query_dict = dict(query_string_list)
 
-        self.send_response(200)
-        self.send_header('Content-type', 'text/plain')
-        self.end_headers()
-
-        if 'name' in query_dict:
+        if 'capital' in query_dict:
             # if the country exists, follow through code below
 
             url = 'https://restcountries.com/v3.1/capital/'
-            query = dict['name']
+            query = query_dict['capital']
             query_url = url + query
 
             response = requests.get(query_url)
@@ -27,7 +23,7 @@ class handler(BaseHTTPRequestHandler):
 
             parsed_country = data[0]['name']
             country = str(parsed_country['common'])
-            result_str = f"{query} is the capital of {country}"
+            result_str = f"{query.upper()} is the capital of {country.upper()}"
 
             # This is in both statements so whatever content returned is consistent
             self.send_response(200)
@@ -37,7 +33,14 @@ class handler(BaseHTTPRequestHandler):
             self.wfile.write(result_str.encode())
         else:
             # if the country doesn't exist/user error, return message below
-            error_message = "Please search for a valid country to receive a valid capital city."
+            error_message = "Please search for a valid capital city to receive a valid country."
 
-        self.wfile.write(error_message.encode())
+            # self.send_response(200)
+            # self.send_header('Content-type', 'text/plain')
+            # self.end_headers()
+
+            self.wfile.write(error_message.encode())
         return
+
+    # non-capital is getting pushed into query_dict and therefore, gets passed into the "it statement". So it ends in a 502 and doesn't get to the else statement.
+
